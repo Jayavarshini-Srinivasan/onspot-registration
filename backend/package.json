@@ -1,0 +1,20 @@
+{
+    "name": "magnus-backend",
+    "version": "1.0.0",
+    "description": "Vercel Serverless Backend for Magnus On-Spot Registration",
+    "scripts": {
+        "start": "node dev-server.js",
+        "dev": "node dev-server.js"
+    },
+    "dependencies": {
+        "firebase-admin": "^11.5.0",
+        "nodemailer": "^6.9.3",
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "body-parser": "^1.20.2",
+        "dotenv": "^16.0.3"
+    },
+    "engines": {
+        "node": "18.x"
+    }
+}

@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Events: readable by anyone (so frontend can show them), only writable by admin (via backend SDK)
+    match /events/{document=**} {
+      allow read: if true;
+      allow write: if false; // Only backend admin SDK can write
+    }
+
+    // Registrations: readable/writable only by authenticated volunteers (or backend admin)
+    match /onspot_registrations/{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
