@@ -4,7 +4,8 @@ const nodemailer = require('nodemailer');
 // Credentials must be set via env vars: EMAIL_USER and EMAIL_PASS
 const getTransporter = () => {
   const emailUser = process.env.EMAIL_USER;
-  const emailPass = process.env.EMAIL_PASS;
+  // Remove any spaces from the password (common copy-paste issue with App Passwords)
+  const emailPass = process.env.EMAIL_PASS?.replace(/\s+/g, '');
 
   if (!emailUser || !emailPass) {
     console.error("Email credentials not set in environment variables!");
