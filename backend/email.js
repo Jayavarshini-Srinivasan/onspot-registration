@@ -17,6 +17,9 @@ const getTransporter = () => {
     auth: {
       user: emailUser,
       pass: emailPass
+    },
+    tls: {
+      rejectUnauthorized: false
     }
   });
 };

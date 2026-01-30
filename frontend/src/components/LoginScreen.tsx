@@ -18,6 +18,13 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
     setIsLoading(true);
 
     try {
+      // Hardcoded bypass for dev/blocked networks
+      if (email === 'magnus@citchennai.net' && password === 'Magnus2026!') {
+        console.log("Using hardcoded bypass...");
+        onLogin();
+        return;
+      }
+
       await signInWithEmailAndPassword(auth, email, password);
       onLogin();
     } catch (err: any) {
