@@ -1,5 +1,5 @@
-const admin = require('../firebaseAdmin'); // Import our centralized init
-const { sendConfirmationEmail } = require('../email');
+const admin = require('./firebaseAdmin'); // Import our centralized init
+const { sendConfirmationEmail } = require('./email');
 
 // Helper to handle CORS
 const allowCors = fn => async (req, res) => {
@@ -134,3 +134,4 @@ const handler = async (req, res) => {
 };
 
 module.exports = allowCors(handler);
+module.exports.default = allowCors(handler);
