@@ -143,7 +143,7 @@ export function EventSelectionScreen({ initialSelectedEvents, onNext, onBack }: 
         </button>
 
         <div className="mb-8 pt-12">
-          <div className="text-slate-500 mb-2">Step 2 of 3</div>
+          <div className="text-slate-500 mb-2">Step 2 of {totalAmount === 0 ? '2' : '3'}</div>
           <h1 className="text-slate-900">Event Selection</h1>
         </div>
 
@@ -203,7 +203,7 @@ export function EventSelectionScreen({ initialSelectedEvents, onNext, onBack }: 
                 disabled={selectedEvents.length === 0}
                 className="w-full px-8 py-4 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors disabled:bg-slate-300 disabled:cursor-not-allowed"
               >
-                Proceed to Payment
+                {totalAmount === 0 ? 'Proceed to Registration' : 'Proceed to Payment'}
               </button>
             </div>
           </div>

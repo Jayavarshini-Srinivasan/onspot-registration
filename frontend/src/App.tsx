@@ -52,11 +52,28 @@ export default function App() {
 
   const handleEventSelection = (events: Event[], total: number) => {
     setRegistrationData(prev => ({ ...prev, selectedEvents: events, totalAmount: total }));
-    setCurrentStep('payment');
+
+    // Skip payment screen if total is 0 (free events only)
+    if (total === 0) {
+      // Pass events and participant directly to avoid state timing issues
+      if (registrationData.participant) {
+        handlePaymentConfirmation(null, events, registrationData.participant);
+      }
+    } else {
+      setCurrentStep('payment');
+    }
   };
 
-  const handlePaymentConfirmation = async (mode: 'cash' | 'upi') => {
-    if (!registrationData.participant || !registrationData.selectedEvents) {
+  const handlePaymentConfirmation = async (
+    mode: 'cash' | 'upi' | null,
+    eventsOverride?: Event[],
+    participantOverride?: ParticipantDetails
+  ) => {
+    // Use override parameters if provided (for free events), otherwise use state
+    const participant = participantOverride || registrationData.participant;
+    const selectedEvents = eventsOverride || registrationData.selectedEvents;
+
+    if (!participant || !selectedEvents) {
       console.error("Missing registration data");
       return;
     }
@@ -77,12 +94,12 @@ export default function App() {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
       const payload = {
-        name: registrationData.participant.fullName,
-        phone: registrationData.participant.phoneNumber,
-        email: registrationData.participant.email,
-        college: registrationData.participant.collegeName,
-        eventIds: registrationData.selectedEvents.map(e => e.id),
-        paymentMode: mode === 'cash' ? 'CASH' : 'UPI'
+        name: participant.fullName,
+        phone: participant.phoneNumber,
+        email: participant.email,
+        college: participant.collegeName,
+        eventIds: selectedEvents.map(e => e.id),
+        paymentMode: mode ? (mode === 'cash' ? 'CASH' : 'UPI') : null
       };
 
       const response = await fetch(`${API_URL}/register`, {

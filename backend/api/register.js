@@ -50,15 +50,13 @@ const handler = async (req, res) => {
   const data = req.body; // In Vercel (express-like), body is already parsed if JSON
   const { name, phone, email, college, eventIds, paymentMode } = data;
   
+
   if (!name || !phone || !email || !college || !eventIds || !Array.isArray(eventIds) || eventIds.length === 0) {
      return res.status(400).json({ 
        error: 'Missing required fields: name, phone, email, college, and at least one event.' 
      });
   }
 
-  if (!['CASH', 'UPI'].includes(paymentMode)) {
-    return res.status(400).json({ error: 'Invalid payment mode. Must be CASH or UPI.' });
-  }
 
   const db = admin.firestore();
 
@@ -87,6 +85,11 @@ const handler = async (req, res) => {
         price: Number(eventData.price)
       });
       totalAmount += Number(eventData.price);
+    }
+
+    // Validate payment mode based on total amount
+    if (totalAmount > 0 && (!paymentMode || !['CASH', 'UPI'].includes(paymentMode))) {
+      return res.status(400).json({ error: 'Payment mode (CASH or UPI) is required when total amount is greater than 0.' });
     }
 
     // 4. Create Registration Record
