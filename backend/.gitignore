@@ -6,3 +6,5 @@ firebase-debug.log
 functions
 test-simulation.js
 test-real.js
+
+.vercel
